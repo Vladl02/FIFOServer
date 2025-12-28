@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source ./config.sh
+
+trap "rm -f $PIPE" EXIT
+
+if [[ ! -d "$MAIN_DIR" ]]; then
+    mkdir "$MAIN_DIR"
+fi
+
+
+if [[ ! -p $PIPE ]]; then
+    mkfifo $PIPE
+fi
+
+
+
+
+
+
+
+
