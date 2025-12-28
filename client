@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source ./config.sh
+
+response_pipe="$MAIN_DIR${$}"
+
+
+while true
+do 
+    if [[ ! -p $PIPE ]]; then
+        echo "the mainPipe doesn't exists"
+        break
+    fi
+
+    echo -n "enter command name: "
+    read command_name
+
+    request="BEGIN-REQ $$: $command_name END-REQ"
+    echo "$request"
+   
+done
