@@ -13,6 +13,26 @@ if [[ ! -p $PIPE ]]; then
     mkfifo $PIPE
 fi
 
+while read line < $PIPE
+do
+    #verify that the line has the correct format
+    if [[ "$line" =~ ^BEGIN-REQ[[:space:]]([0-9]+):[[:space:]](.+)[[:space:]]END-REQ$ ]]; then
+        pid=${BASH_REMATCH[1]}
+        command_name=${BASH_REMATCH[2]}
+
+        client_fifo="$MAIN_DIR${pid}"
+
+        echo "$pid asks the man for $command_name"
+
+        mkfifo $client_fifo
+
+        timeout "$timeout_value" bash -c 'man -- "$1" >"$2" 2>&1' _ "$command_name" "$client_fifo"
+
+    else
+        echo "$line"
+        echo "Request has the wrong format"
+    fi
+done
 
 
 
