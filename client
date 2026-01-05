@@ -16,6 +16,23 @@ do
     read command_name
 
     request="BEGIN-REQ $$: $command_name END-REQ"
-    echo "$request"
-   
+
+
+    if [[ ! -p $PIPE ]]; then
+        echo "the mainPipe doesn't exists"
+        break
+    else
+        echo "$request" >$PIPE
+    fi
+    
+
+    while [[ ! -p "$response_pipe" ]] 
+    do
+        sleep 0.05
+    done
+
+    cat "$response_pipe"
+    
+    rm -f $response_pipe
+
 done
